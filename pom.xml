@@ -22,7 +22,7 @@
             <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-library</artifactId>
-                <version>2.10.6</version>
+                <version>2.11.7</version>
             </dependency>
 
             <dependency>
@@ -38,14 +38,14 @@
 
             <dependency>
                 <groupId>com.typesafe.akka</groupId>
-                <artifactId>akka-actor_2.10</artifactId>
-                <version>2.3.14</version>
+                <artifactId>akka-actor_2.11</artifactId>
+                <version>2.4.2</version>
             </dependency>
 
             <dependency>
                 <groupId>com.typesafe.akka</groupId>
-                <artifactId>akka-remote_2.10</artifactId>
-                <version>2.3.14</version>
+                <artifactId>akka-remote_2.11</artifactId>
+                <version>2.4.2</version>
             </dependency>
 
             <dependency>
@@ -118,5 +118,13 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <repositories>
+        <repository>
+            <id>akka</id>
+            <name>akka</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
 
 </project>
