@@ -1,7 +1,7 @@
 package org.igye.xogameclient
 
 import akka.actor.Actor
-import org.igye.xogamecommons.WantToPLay
+import org.igye.xogamecommons.WantToPlay
 import org.igye.xogamecommons.XOGameCommons._
 
 class ClientActor(serverHost: String, serverPort: Int, name: String, sessionId: String) extends Actor {
@@ -11,7 +11,7 @@ class ClientActor(serverHost: String, serverPort: Int, name: String, sessionId: 
     super.preStart()
     context.actorSelection(
       s"akka.tcp://${SERVER_SYSTEM_NAME}@$serverHost:$serverPort/user/$SERVER_ENTRY_ACTOR_NAME"
-    ) ! WantToPLay(name, sessionId)
+    ) ! WantToPlay(name, sessionId)
   }
 
   def receive = {
