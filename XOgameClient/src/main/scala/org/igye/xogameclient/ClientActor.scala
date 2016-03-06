@@ -1,10 +1,12 @@
 package org.igye.xogameclient
 
 import akka.actor.Actor
+import org.apache.logging.log4j.LogManager
 import org.igye.xogamecommons.WantToPlay
 import org.igye.xogamecommons.XOGameCommons._
 
 class ClientActor(serverHost: String, serverPort: Int, name: String, sessionId: String) extends Actor {
+  val log = LogManager.getLogger()
 
   @throws[Exception](classOf[Exception])
   override def preStart(): Unit = {
@@ -16,6 +18,6 @@ class ClientActor(serverHost: String, serverPort: Int, name: String, sessionId: 
 
   def receive = {
     case msg =>
-      println(s"ClientActor received message '$msg'")
+      log.info(s"ClientActor received message '$msg'")
   }
 }

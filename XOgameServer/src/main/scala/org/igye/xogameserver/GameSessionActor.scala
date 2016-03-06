@@ -1,10 +1,13 @@
 package org.igye.xogameserver
 
 import akka.actor.{Actor, Props}
+import org.apache.logging.log4j.LogManager
 import org.igye.xogamecommons.GameStarted
 
 class GameSessionActor(players: List[Player]) extends Actor {
   assert(players.size == 2)
+
+  val log = LogManager.getLogger()
 
   @throws[Exception](classOf[Exception])
   override def preStart(): Unit = {
