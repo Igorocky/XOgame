@@ -5,6 +5,7 @@ import org.igye.xogamecommons.XOField;
 import scala.Option;
 
 public interface XOGamePlayer {
+    String getName();
     void gameStarted(String msg, Cell cellType);
     int turn(XOField field);
     void gameOver(Option<String> winner, String msg);

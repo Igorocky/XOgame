@@ -60,6 +60,7 @@
                             <mainClass>org.igye.xogameserver.XOGameServerMain</mainClass>
                         </manifest>
                     </archive>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
             </plugin>
         </plugins>

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager
 import org.igye.xogamecommons._
 import org.igye.xogamecommons.XOGameCommons._
 
-class ClientActor(serverHost: String, serverPort: Int, name: String, sessionId: String, player: XOGamePlayer) extends Actor {
+class ClientActor(serverHost: String, serverPort: Int, sessionId: String, player: XOGamePlayer) extends Actor {
   private val log = LogManager.getLogger()
 
   private var sessionActor: ActorRef = _
@@ -15,7 +15,7 @@ class ClientActor(serverHost: String, serverPort: Int, name: String, sessionId: 
     super.preStart()
     context.actorSelection(
       s"akka.tcp://${SERVER_SYSTEM_NAME}@$serverHost:$serverPort/user/$SERVER_ENTRY_ACTOR_NAME"
-    ) ! WantToPlay(name, sessionId)
+    ) ! WantToPlay(player.getName, sessionId)
   }
 
   def receive = {

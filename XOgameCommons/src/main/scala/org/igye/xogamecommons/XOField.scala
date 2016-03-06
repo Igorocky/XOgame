@@ -2,25 +2,32 @@ package org.igye.xogamecommons
 
 import org.igye.xogamecommons.Cells._
 
-case class XOField(state: Vector[Cell]) {
+import scala.collection.JavaConverters._
+
+case class XOField(cells: Vector[Cell]) {
   import XOField._
 
-  assert(state.size == LENGTH)
+  assert(cells.size == LENGTH)
 
   def this() = this(Vector.fill(XOField.LENGTH)(EMPTY))
 
-  def withField(idx: Int, value: Cell): XOField = XOField(state.updated(idx, value))
+  def withField(idx: Int, value: Cell): XOField = XOField(cells.updated(idx, value))
   def withField(row: Int, col: Int, value: Cell): XOField = withField(calcIdx(row, col), value)
 
-  def apply(idx: Int): Cell = state(idx)
-  def apply(row: Int, col: Int): Cell = state(calcIdx(row, col))
+  def apply(idx: Int): Cell = cells(idx)
+  def cellAt(idx: Int): Cell = apply(idx)
+
+  def apply(row: Int, col: Int): Cell = cells(calcIdx(row, col))
+  def cellAt(row: Int, col: Int): Cell = apply(row, col)
+
+  def cellsAsList: java.util.List[Cell] = cells.asJava
 
   override def toString: String =
-    s"${state(0).value}|${state(1).value}|${state(2).value}\n" +
+    s"${cells(0).value}|${cells(1).value}|${cells(2).value}\n" +
       s"-----\n" +
-      s"${state(3).value}|${state(4).value}|${state(5).value}\n" +
+      s"${cells(3).value}|${cells(4).value}|${cells(5).value}\n" +
       s"-----\n" +
-      s"${state(6).value}|${state(7).value}|${state(8).value}"
+      s"${cells(6).value}|${cells(7).value}|${cells(8).value}"
 
   private def calcIdx(row: Int, col: Int) = row*COLUMN_CNT + col
 }
