@@ -12,7 +12,8 @@ object XOGameServerMain {
       Map(
         "-h" -> "akka.remote.netty.tcp.hostname",
         "-p" -> "akka.remote.netty.tcp.port",
-        "-s" -> Constants.SHUTDOWN_ON_GAMEOVER
+        "-s" -> Constants.SHUTDOWN_ON_MATCHOVER,
+        "-g" -> Constants.NUMBER_OF_GAMES
       )
     )
     XOConfig.setup(config)
