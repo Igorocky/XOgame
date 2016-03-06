@@ -26,6 +26,11 @@
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.igye</groupId>
+            <artifactId>commonutils</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

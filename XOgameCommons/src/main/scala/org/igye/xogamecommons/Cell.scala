@@ -1,4 +1,4 @@
-package org.igye.xogameclient
+package org.igye.xogamecommons
 
 import org.igye.commonutils.Enum
 

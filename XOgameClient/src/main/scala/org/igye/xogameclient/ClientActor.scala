@@ -1,12 +1,14 @@
 package org.igye.xogameclient
 
-import akka.actor.Actor
+import akka.actor.{ActorRef, Actor}
 import org.apache.logging.log4j.LogManager
-import org.igye.xogamecommons.WantToPlay
+import org.igye.xogamecommons._
 import org.igye.xogamecommons.XOGameCommons._
 
-class ClientActor(serverHost: String, serverPort: Int, name: String, sessionId: String) extends Actor {
-  val log = LogManager.getLogger()
+class ClientActor(serverHost: String, serverPort: Int, name: String, sessionId: String, player: XOGamePlayer) extends Actor {
+  private val log = LogManager.getLogger()
+
+  private var sessionActor: ActorRef = _
 
   @throws[Exception](classOf[Exception])
   override def preStart(): Unit = {
@@ -17,7 +19,16 @@ class ClientActor(serverHost: String, serverPort: Int, name: String, sessionId: 
   }
 
   def receive = {
-    case msg =>
-      log.info(s"ClientActor received message '$msg'")
+    case m @ GameStarted(sessionActor, msg, cellType) =>
+      log.info(m)
+      this.sessionActor = sessionActor
+      player.gameStarted(msg, cellType)
+    case m @ YourTurn(field: XOField) =>
+      log.info(m)
+      sessionActor ! Turn(player.turn(field))
+    case m @ GameOver(winner: Option[String], msg: String) =>
+      log.info(m)
+      player.gameOver(winner, msg)
+      context.system.terminate()
   }
 }

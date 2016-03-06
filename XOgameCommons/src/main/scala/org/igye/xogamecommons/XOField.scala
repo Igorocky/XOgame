@@ -1,6 +1,6 @@
-package org.igye.xogameclient
+package org.igye.xogamecommons
 
-import org.igye.xogameclient.Cells._
+import org.igye.xogamecommons.Cells._
 
 case class XOField(state: Vector[Cell]) {
   import XOField._
@@ -12,8 +12,8 @@ case class XOField(state: Vector[Cell]) {
   def withField(idx: Int, value: Cell): XOField = XOField(state.updated(idx, value))
   def withField(row: Int, col: Int, value: Cell): XOField = withField(calcIdx(row, col), value)
 
-  def apply(idx: Int) = state(idx)
-  def apply(row: Int, col: Int) = state(calcIdx(row, col))
+  def apply(idx: Int): Cell = state(idx)
+  def apply(row: Int, col: Int): Cell = state(calcIdx(row, col))
 
   override def toString: String =
     s"${state(0).value}|${state(1).value}|${state(2).value}\n" +

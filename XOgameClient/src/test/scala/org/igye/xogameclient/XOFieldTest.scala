@@ -1,5 +1,6 @@
 package org.igye.xogameclient
 
+import org.igye.xogamecommons.{Cells, XOField}
 import org.junit.{Assert, Test}
 
 class XOFieldTest {
