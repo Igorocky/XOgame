@@ -122,7 +122,11 @@ class GameSessionActor(sessionId: String, pls: List[Player]) extends Actor {
     players(0) ! gameOver
     players(1) ! gameOver
     log.info(s"GameOver: $gameOver")
-    context.stop(self)
+    if (XOConfig.getBoll(Constants.SHUTDOWN_ON_GAMEOVER)) {
+      context.system.terminate()
+    } else {
+      context.stop(self)
+    }
   }
 }
 

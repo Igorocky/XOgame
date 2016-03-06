@@ -15,6 +15,7 @@ object XOGameServerMain {
         "-s" -> Constants.SHUTDOWN_ON_GAMEOVER
       )
     )
+    XOConfig.setup(config)
     val system = ActorSystem(SERVER_SYSTEM_NAME, config)
     val entryActor = system.actorOf(Props[EntryActor], name = SERVER_ENTRY_ACTOR_NAME)
   }

@@ -9,4 +9,6 @@ object XOConfig {
   def setup(config: Config): Unit = configVar = config
 
   def getInt(prop: String) = cfg.getInt(prop)
+
+  def getBoll(prop: String) = cfg.getBoolean(prop)
 }
