@@ -6,6 +6,9 @@ import com.typesafe.config.ConfigValueFactory._
 import scala.annotation.tailrec
 
 object XOGameCommons {
+  final val SERVER_SYSTEM_NAME = "XOGameServer"
+  final val SERVER_ENTRY_ACTOR_NAME = "EntryActor"
+
   @tailrec
   def updateConfigFromArgs(config: Config, args: Array[String], startIdx: Int = 0): Config = {
     if (startIdx >= args.length) {

@@ -1,16 +1,16 @@
 package org.igye.xogameclient
 
-import org.igye.xogameclient.Fields._
+import org.igye.xogameclient.Cells._
 
-case class XOState(state: Vector[Field]) {
-  import XOState._
+case class XOField(state: Vector[Cell]) {
+  import XOField._
 
   assert(state.size == LENGTH)
 
-  def this() = this(Vector.fill(XOState.LENGTH)(EMPTY))
+  def this() = this(Vector.fill(XOField.LENGTH)(EMPTY))
 
-  def withField(idx: Int, value: Field): XOState = XOState(state.updated(idx, value))
-  def withField(row: Int, col: Int, value: Field): XOState = withField(calcIdx(row, col), value)
+  def withField(idx: Int, value: Cell): XOField = XOField(state.updated(idx, value))
+  def withField(row: Int, col: Int, value: Cell): XOField = withField(calcIdx(row, col), value)
 
   def apply(idx: Int) = state(idx)
   def apply(row: Int, col: Int) = state(calcIdx(row, col))
@@ -25,10 +25,10 @@ case class XOState(state: Vector[Field]) {
   private def calcIdx(row: Int, col: Int) = row*COLUMN_CNT + col
 }
 
-object XOState {
+object XOField {
   private final val ROW_CNT = 3
   private final val COLUMN_CNT = 3
   private final val LENGTH = ROW_CNT * COLUMN_CNT
 
-  def apply() = new XOState()
+  def apply() = new XOField()
 }

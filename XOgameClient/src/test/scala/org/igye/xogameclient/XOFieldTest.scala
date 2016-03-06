@@ -2,7 +2,7 @@ package org.igye.xogameclient
 
 import org.junit.{Assert, Test}
 
-class XOStateTest {
+class XOFieldTest {
   @Test
   def testToString1: Unit = {
     Assert.assertEquals(
@@ -11,31 +11,31 @@ class XOStateTest {
       " |O| \n" +
       "-----\n" +
       " | | ",
-      XOState().withField(2, Fields.X).withField(1, 1, Fields.O).toString
+      XOField().withField(2, Cells.X).withField(1, 1, Cells.O).toString
     )
   }
 
   @Test
   def testApply1: Unit = {
     Assert.assertEquals(
-      Fields.EMPTY,
-      XOState()(5)
+      Cells.EMPTY,
+      XOField()(5)
     )
   }
 
   @Test
   def testApply2: Unit = {
     Assert.assertEquals(
-      Fields.O,
-      XOState().withField(7, Fields.O).withField(1, 1, Fields.X)(7)
+      Cells.O,
+      XOField().withField(7, Cells.O).withField(1, 1, Cells.X)(7)
     )
   }
 
   @Test
   def testApply3: Unit = {
     Assert.assertEquals(
-      Fields.X,
-      XOState().withField(1, 0, Fields.X).withField(1, 1, Fields.O)(1, 0)
+      Cells.X,
+      XOField().withField(1, 0, Cells.X).withField(1, 1, Cells.O)(1, 0)
     )
   }
 }
