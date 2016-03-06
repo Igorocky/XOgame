@@ -7,7 +7,16 @@
         <RollingFile name="generalAppender" fileName="${logDir}/xo_game_client.log"
                      filePattern="${logDir}/xo_game_client_%d{yyyy-MM-dd_HH-mm}_%i.log">
             <PatternLayout>
-                <Pattern>%d %p %c{1.} %m%n</Pattern>
+                <Pattern>%date %level %logger{1.} %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="gameHistoryAppender" fileName="${logDir}/gameHistory.log"
+                     filePattern="${logDir}/gameHistory_%d{yyyy-MM-dd_HH-mm}_%i.log">
+            <PatternLayout>
+                <Pattern>%date %X{sessionId} %msg%n</Pattern>
             </PatternLayout>
             <Policies>
                 <OnStartupTriggeringPolicy/>
@@ -15,7 +24,7 @@
         </RollingFile>
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout>
-                <Pattern>%d %p %c{1.} %m%n</Pattern>
+                <Pattern>%date %level %logger{1.} %msg%n</Pattern>
             </PatternLayout>
         </Console>
     </Appenders>
@@ -25,6 +34,9 @@
             <AppenderRef ref="generalAppender"/>
             <AppenderRef ref="console"/>
         </Root>
+        <logger name="org.igye.xogameclient.ClientActor" level="DEBUG" additivity="false">
+            <appender-ref ref="gameHistoryAppender"/>
+        </logger>
     </Loggers>
 
 </Configuration>

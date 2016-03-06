@@ -1,12 +1,13 @@
 package org.igye.xogameclient
 
-import akka.actor.{ActorRef, Actor}
-import org.apache.logging.log4j.LogManager
-import org.igye.xogamecommons._
+import akka.actor.{Actor, ActorRef}
+import akka.event.{DiagnosticLoggingAdapter, Logging}
 import org.igye.xogamecommons.XOGameCommons._
+import org.igye.xogamecommons._
 
 class ClientActor(serverHost: String, serverPort: Int, sessionId: String, player: XOGamePlayer) extends Actor {
-  private val log = LogManager.getLogger()
+  private val log: DiagnosticLoggingAdapter = Logging(this)
+  log.mdc(Map("sessionId" -> sessionId))
 
   private var sessionActor: ActorRef = _
 
@@ -20,14 +21,17 @@ class ClientActor(serverHost: String, serverPort: Int, sessionId: String, player
 
   def receive = {
     case m @ GameStarted(sessionActor, msg, cellType) =>
-      log.info(m)
+      log.info(m.toString)
+      log.info(s"Game started. I am playing with ${cellType.value}")
       this.sessionActor = sessionActor
       player.gameStarted(msg, cellType)
     case m @ YourTurn(field: XOField) =>
-      log.info(m)
-      sessionActor ! Turn(player.turn(field))
+      log.info(s"field:\n${field}")
+      val turn = Turn(player.turn(field))
+      log.info(s"my answer is ${turn.cell}")
+      sessionActor ! turn
     case m @ GameOver(winner: Option[String], msg: String) =>
-      log.info(m)
+      log.info(m.toString)
       player.gameOver(winner, msg)
       context.system.terminate()
   }

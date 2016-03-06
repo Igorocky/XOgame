@@ -15,7 +15,7 @@ class EntryActor extends Actor {
       sender ! s"you are accepted with name='$name' and id='$sessionId' "
       if (awaitingPlayers.contains(sessionId)) {
         val players = List(awaitingPlayers(sessionId), Player(name, sessionId, sender))
-        context.system.actorOf(GameSessionActor.props(players), "GameSessionActor")
+        context.system.actorOf(GameSessionActor.props(sessionId, players), "GameSessionActor")
         awaitingPlayers -= sessionId
         log.info(s"GameSessionActor was created for $players")
       } else {

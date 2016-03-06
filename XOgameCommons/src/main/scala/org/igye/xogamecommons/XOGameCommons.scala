@@ -10,20 +10,23 @@ object XOGameCommons {
   final val SERVER_ENTRY_ACTOR_NAME = "EntryActor"
 
   @tailrec
-  def updateConfigFromArgs(config: Config, args: Array[String], startIdx: Int = 0): Config = {
+  def updateConfigFromArgs(config: Config, args: Array[String], mapper: Map[String, String], startIdx: Int = 0): Config = {
     if (startIdx >= args.length) {
       config
     } else {
-      args(startIdx) match {
-        case "-h" => updateConfigFromArgs(
-          config.withValue("akka.remote.netty.tcp.hostname", fromAnyRef(args(startIdx + 1))),
+      if (mapper.contains(args(startIdx))) {
+        updateConfigFromArgs(
+          config.withValue(mapper(args(startIdx)), fromAnyRef(args(startIdx + 1))),
           args,
+          mapper,
           startIdx + 2
         )
-        case "-p" => updateConfigFromArgs(
-          config.withValue("akka.remote.netty.tcp.port", fromAnyRef(args(startIdx + 1))),
+      } else {
+        updateConfigFromArgs(
+          config,
           args,
-          startIdx + 2
+          mapper,
+          startIdx + 1
         )
       }
     }

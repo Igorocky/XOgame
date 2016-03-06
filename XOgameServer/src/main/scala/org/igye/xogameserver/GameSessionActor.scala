@@ -2,14 +2,15 @@ package org.igye.xogameserver
 
 import java.util.Random
 
-import akka.actor.{ActorRef, Actor, Props}
-import org.apache.logging.log4j.LogManager
+import akka.actor.{Actor, ActorRef, Props}
+import akka.event.{DiagnosticLoggingAdapter, Logging}
 import org.igye.xogamecommons._
 
-class GameSessionActor(pls: List[Player]) extends Actor {
+class GameSessionActor(sessionId: String, pls: List[Player]) extends Actor {
   assert(pls.size == 2)
 
-  private val log = LogManager.getLogger()
+  private val log: DiagnosticLoggingAdapter = Logging(this)
+  log.mdc(Map("sessionId" -> sessionId))
 
   private val players: List[Player] = pls.foldLeft(List[Player]()){
     case (Nil, pl) => List(pl.copy(cellType = if(new Random().nextInt(2) == 1) Cells.X else Cells.O))
@@ -25,6 +26,7 @@ class GameSessionActor(pls: List[Player]) extends Actor {
     players(0) ! GameStarted(self, s"You will play with ${players(1).name}.", players(0).cellType)
     players(1) ! GameStarted(self, s"You will play with ${players(0).name}.", players(1).cellType)
     waitNextTurnFrom ! YourTurn(field)
+    log.info(s"Game started. Player1 - ${players(0)}. Player2 - ${players(1)}")
   }
 
   override def receive: Receive = {
@@ -41,7 +43,9 @@ class GameSessionActor(pls: List[Player]) extends Actor {
             s"$waitNextTurnFrom tried to occupy nonempty field $cellNumber"
           )
         } else {
+          log.info(s"${waitNextTurnFrom.name} answered - $cellNumber")
           field = field.withField(cellNumber, waitNextTurnFrom.cellType)
+          log.info(s"\n$field")
           val winner: Option[Player] = findWinner(field).flatMap(winnerCell => players.find(_.cellType == winnerCell))
           if (winner.isDefined) {
             winner.foreach(w => gameOver(Some(w.name), s"winner is ${w.name}"))
@@ -117,10 +121,11 @@ class GameSessionActor(pls: List[Player]) extends Actor {
     val gameOver = GameOver(winner, msg)
     players(0) ! gameOver
     players(1) ! gameOver
+    log.info(s"GameOver: $gameOver")
     context.stop(self)
   }
 }
 
 object GameSessionActor {
-  def props(players: List[Player]): Props = Props(new GameSessionActor(players))
+  def props(sessionId: String, players: List[Player]): Props = Props(new GameSessionActor(sessionId, players))
 }
