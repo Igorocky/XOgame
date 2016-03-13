@@ -106,7 +106,7 @@ class GameSessionActor(players: List[Player]) extends Actor {
   }
 
   private def getCellIfAllAreSame(cell1: Cell, cell2: Cell, cell3: Cell) = {
-    if (cell1 == cell2 && cell2 == cell3) {
+    if (Cells.EMPTY != cell1 && cell1 == cell2 && cell2 == cell3) {
       Some(cell1)
     } else {
       None
